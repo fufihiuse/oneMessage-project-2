@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap');
+
+#message{
+    margin-top: 50px;
+    border: 1px solid #E2F1E7;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    max-width: 67vw;
+    min-height: 10vh;
+    font-size: 20pt;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    padding-left: 1wv;
+    padding-right: 1wv;
+    background-color: #629584;
+}
+
+#submitMessage{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 67vw;
+    min-height: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    padding-left: 1wv;
+    padding-right: 1wv;
+    font-size: 15pt;
+    gap: 10px;
+}
+
+body{
+    font-family: 'Host Grotesk', sans-serif;
+    text-align: center;
+    background-color: #387478;
+    color: #243642;
+}
+
+input, textarea{
+    background-color: #387478;
+    color: #243642;
+    border: 1px solid #E2F1E7;
+    border-radius: 5px;
+    background-color: #629584;  
+    font-size: 15pt;
+}
