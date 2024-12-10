@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
     entry: {
-        app: './client/maker.jsx',
+        app: './client/app.jsx',
         login: './client/login.jsx',
     },
     module: {
@@ -17,7 +17,8 @@ module.exports = {
             },
         ],
     },
-    mode: 'production',
+    devtool: 'source-map',
+    mode: 'development',
     watchOptions: {
         aggregateTimeout: 200,
     },

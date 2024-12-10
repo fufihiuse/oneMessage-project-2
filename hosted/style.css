@@ -53,3 +53,15 @@ input, textarea{
     background-color: #629584;  
     font-size: 15pt;
 }
+
+input{
+    padding: 3px, auto;
+}
+
+label{
+    font-size: 15pt;
+}
+
+form *{
+    margin-left: 4px;
+}
