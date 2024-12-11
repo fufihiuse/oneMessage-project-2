@@ -91,6 +91,10 @@ label{
     font-size: 15pt;
 }
 
+#changePassForm label{
+    color: #10181a;
+}
+
 form *{
     margin-left: 4px;
 }
