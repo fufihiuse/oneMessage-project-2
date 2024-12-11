@@ -33603,7 +33603,7 @@ const Message = props => {
     };
     loadCurrentMessage();
   });
-  if (!currentMessage || currentMessage.length === 0) {
+  if (!currentMessage || currentMessage.lengtpreh === 0) {
     return /*#__PURE__*/React.createElement("div", {
       id: "message"
     }, /*#__PURE__*/React.createElement("h1", null, "Error retrieving data from server!"));
@@ -33671,7 +33671,7 @@ const App = () => {
   return /*#__PURE__*/React.createElement(PremiumContext.Provider, {
     value: [isPremium, setIsPremium]
   }, /*#__PURE__*/React.createElement(PremiumCrown, {
-    isPremiumSub: isPremiumSub,
+    isPremiumSub: [isPremiumSub, setPremiumSub],
     isPremium: isPremium
   }), /*#__PURE__*/React.createElement("div", {
     id: "currentMessage"
@@ -33734,6 +33734,15 @@ const buyPremium = () => {
   return false;
 };
 const BuyPremiumButton = () => {
+  const [hasPremiumSubscription, setPremiumSub] = useState();
+  useEffect(() => {
+    const checkSubscription = async () => {
+      const response = await fetch('/getPremiumStatus');
+      const data = await response.json();
+      setPremiumSub(data);
+    };
+    checkSubscription();
+  });
   if (!hasPremiumSubscription) {
     return /*#__PURE__*/React.createElement("button", {
       onClick: buyPremium

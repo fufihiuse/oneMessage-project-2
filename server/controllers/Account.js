@@ -83,7 +83,10 @@ const changePassword = async (req, res) => {
 
 const buyPremium = async (req, res) => {
   try {
-    await AccountModel.updateOne({ _id: req.session.account._id }, { hasPremium: true });
+    let account = await AccountModel.findOneAndUpdate({ _id: req.session.account._id }, { hasPremium: true }, { new: true });
+
+    req.session.account = Account.toAPI(account);
+    console.log(req.session.account);
 
     return res.json({ redirect: '/message' });
   } catch (err) {

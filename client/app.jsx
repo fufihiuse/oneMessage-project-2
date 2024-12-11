@@ -61,7 +61,7 @@ const Message = (props) => {
         loadCurrentMessage();
     });
 
-    if (!currentMessage || currentMessage.length === 0) {
+    if (!currentMessage || currentMessage.lengtpreh === 0) {
         return (
             <div id='message'>
                 <h1>Error retrieving data from server!</h1>
@@ -110,8 +110,6 @@ const PremiumCrown = (props) => {
             setPremiumSub(data);
         };
         checkSubscription();
-
-
     });
 
     if (!isPremiumSub) {
@@ -132,7 +130,7 @@ const App = () => {
 
     return (
         <PremiumContext.Provider value={[isPremium, setIsPremium]}>
-            <PremiumCrown isPremiumSub={isPremiumSub} isPremium={isPremium} />
+            <PremiumCrown isPremiumSub={[isPremiumSub, setPremiumSub]} isPremium={isPremium} />
             <div id="currentMessage">
                 <Message currentMessage={[]} reloadMessage={reloadMessage} />
             </div>
@@ -190,6 +188,16 @@ const buyPremium = () => {
 }
 
 const BuyPremiumButton = () => {
+    const [hasPremiumSubscription, setPremiumSub] = useState();
+    useEffect(() => {
+        const checkSubscription = async () => {
+            const response = await fetch('/getPremiumStatus');
+            const data = await response.json();
+            setPremiumSub(data);
+        };
+        checkSubscription();
+    });
+
     if (!hasPremiumSubscription) {
         return <button onClick={buyPremium}>Purchase Premium</button>
     }
