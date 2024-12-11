@@ -15,8 +15,8 @@ const router = (app) => {
 
   app.post('/changePassword', mid.requiresSecure, mid.requiresLogin, controllers.Account.changePassword);
 
-  app.post('/buyPremium', mid.requiresSecure, controllers.Account.buyPremium);
-  app.get('/getPremiumStatus', mid.requiresSecure, controllers.Account.getPremiumStatus);
+  app.post('/buyPremium', mid.requiresSecure, mid.requiresLogin, controllers.Account.buyPremium);
+  app.get('/getPremiumStatus', mid.requiresLogin, controllers.Account.getPremiumStatus);
 
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
