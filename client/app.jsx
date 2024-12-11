@@ -44,7 +44,7 @@ const MessageForm = (props) => {
 
 const Message = (props) => {
     const [currentMessage, setCurrentMessage] = useState(props.currentMessage);
-    const [isPremium, setIsPremium] = useContext(PremiumContext);
+    const [isPremium] = useContext(PremiumContext);
 
     useEffect(() => {
         const loadCurrentMessage = async () => {
@@ -110,6 +110,7 @@ const PremiumCrown = (props) => {
             setPremiumSub(data);
         };
         checkSubscription();
+
 
     });
 

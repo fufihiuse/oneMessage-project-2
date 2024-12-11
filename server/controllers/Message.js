@@ -7,7 +7,7 @@ const messagePage = async (req, res) => res.render('app');
 const getMessage = async (req, res) => {
   try {
     const docs = await Message.findOne({ isPremium: false }).sort({ createdDate: 'descending' }).lean().exec();
-
+    console.log(docs);
     return res.json({ message: docs });
   } catch (err) {
     console.log(err);
