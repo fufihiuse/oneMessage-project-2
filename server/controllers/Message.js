@@ -6,7 +6,7 @@ const messagePage = async (req, res) => res.render('app');
 
 const getMessage = async (req, res) => {
   try {
-    const docs = await Message.findOne({ isPremium: false }).sort({ createdDate: 'descending' }).lean().exec();
+    const docs = await Message.findOne({ isPremium: false }).sort({ createdDate: -1 }).lean().exec();
     return res.json({ message: docs });
   } catch (err) {
     console.log(err);
@@ -16,7 +16,7 @@ const getMessage = async (req, res) => {
 
 const getPremiumMessage = async (req, res) => {
   try {
-    const docs = await Message.findOne({ isPremium: true }).sort({ createdDate: 'descending' }).lean().exec();
+    const docs = await Message.findOne({ isPremium: true }).sort({ createdDate: -1 }).lean().exec();
 
     return res.json({ message: docs });
   } catch (err) {

@@ -33602,8 +33602,9 @@ const Message = props => {
       setCurrentMessage(data.message);
     };
     loadCurrentMessage();
-  });
-  if (!currentMessage || currentMessage.lengtpreh === 0) {
+  }); // , [props.reloadMessage]
+
+  if (!currentMessage || currentMessage.length === 0) {
     return /*#__PURE__*/React.createElement("div", {
       id: "message"
     }, /*#__PURE__*/React.createElement("h1", null, "Error retrieving data from server!"));
@@ -33660,6 +33661,7 @@ const PremiumCrown = props => {
     id: "premiumCrown",
     onClick: () => {
       setIsPremium(!isPremium);
+      props.triggerReload();
     }
   });
 };
@@ -33672,7 +33674,8 @@ const App = () => {
     value: [isPremium, setIsPremium]
   }, /*#__PURE__*/React.createElement(PremiumCrown, {
     isPremiumSub: [isPremiumSub, setPremiumSub],
-    isPremium: isPremium
+    isPremium: isPremium,
+    triggerReload: () => setReloadMessage(!reloadMessage)
   }), /*#__PURE__*/React.createElement("div", {
     id: "currentMessage"
   }, /*#__PURE__*/React.createElement(Message, {

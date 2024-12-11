@@ -59,9 +59,9 @@ const Message = (props) => {
             setCurrentMessage(data.message);
         };
         loadCurrentMessage();
-    });
+    }); // , [props.reloadMessage]
 
-    if (!currentMessage || currentMessage.lengtpreh === 0) {
+    if (!currentMessage || currentMessage.length === 0) {
         return (
             <div id='message'>
                 <h1>Error retrieving data from server!</h1>
@@ -119,7 +119,7 @@ const PremiumCrown = (props) => {
     let imgName = isPremium ? 'crown-premium.png' : 'crown-normal.png';
     let imgPath = '/assets/img/' + imgName;
     return (
-        <img src={imgPath} alt='premium toggle crown' id='premiumCrown' onClick={() => { setIsPremium(!isPremium) }}></img>
+        <img src={imgPath} alt='premium toggle crown' id='premiumCrown' onClick={() => { setIsPremium(!isPremium); props.triggerReload(); }}></img>
     )
 }
 
@@ -130,7 +130,7 @@ const App = () => {
 
     return (
         <PremiumContext.Provider value={[isPremium, setIsPremium]}>
-            <PremiumCrown isPremiumSub={[isPremiumSub, setPremiumSub]} isPremium={isPremium} />
+            <PremiumCrown isPremiumSub={[isPremiumSub, setPremiumSub]} isPremium={isPremium} triggerReload={() => setReloadMessage(!reloadMessage)} />
             <div id="currentMessage">
                 <Message currentMessage={[]} reloadMessage={reloadMessage} />
             </div>
