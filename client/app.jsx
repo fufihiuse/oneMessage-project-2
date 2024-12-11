@@ -3,6 +3,8 @@ const React = require('react');
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
 
+let root;
+
 const handleMessage = (e, onMessageSent) => {
     e.preventDefault();
     helper.hideError();
@@ -113,21 +115,38 @@ const ChangePasswordForm = () => {
             className='mainForm'>
             <label htmlFor="pass">New Password:</label>
             <input id="pass" type="password" name="pass" placeholder="new password" />
+            <br />
             <label htmlFor="pass2">New Password:</label>
             <input id="pass2" type="password" name="pass2" placeholder="retype password" />
+            <br />
             <input className="formSubmit" type="submit" value="Change" />
         </form>
     );
 }
 
+const showChangePassword = () => {
+    root.render(<ChangePasswordForm />);
+}
+
+const ChangePasswordButton = () => {
+    return <button id='changePasswordButton' onClick={showChangePassword}>Change Password</button>;
+}
+
+const Settings = () => {
+
+    return (
+        <ChangePasswordButton />
+    );
+}
+
 const init = () => {
-    const changePasswordButton = document.getElementById('changePasswordButton');
+    const settingsButton = document.getElementById('settingsButton');
 
-    const root = createRoot(document.getElementById('app'));
+    root = createRoot(document.getElementById('app'));
 
-    changePasswordButton.addEventListener('click', (e) => {
+    settingsButton.addEventListener('click', (e) => {
         e.preventDefault();
-        root.render(<ChangePasswordForm />);
+        root.render(<Settings />);
         return false;
     })
     root.render(<App />);

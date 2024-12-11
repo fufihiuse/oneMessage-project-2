@@ -33540,6 +33540,7 @@ const {
 const {
   createRoot
 } = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
+let root;
 const handleMessage = (e, onMessageSent) => {
   e.preventDefault();
   helper.hideError();
@@ -33647,25 +33648,37 @@ const ChangePasswordForm = () => {
     type: "password",
     name: "pass",
     placeholder: "new password"
-  }), /*#__PURE__*/React.createElement("label", {
+  }), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("label", {
     htmlFor: "pass2"
   }, "New Password:"), /*#__PURE__*/React.createElement("input", {
     id: "pass2",
     type: "password",
     name: "pass2",
     placeholder: "retype password"
-  }), /*#__PURE__*/React.createElement("input", {
+  }), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("input", {
     className: "formSubmit",
     type: "submit",
     value: "Change"
   }));
 };
+const showChangePassword = () => {
+  root.render(/*#__PURE__*/React.createElement(ChangePasswordForm, null));
+};
+const ChangePasswordButton = () => {
+  return /*#__PURE__*/React.createElement("button", {
+    id: "changePasswordButton",
+    onClick: showChangePassword
+  }, "Change Password");
+};
+const Settings = () => {
+  return /*#__PURE__*/React.createElement(ChangePasswordButton, null);
+};
 const init = () => {
-  const changePasswordButton = document.getElementById('changePasswordButton');
-  const root = createRoot(document.getElementById('app'));
-  changePasswordButton.addEventListener('click', e => {
+  const settingsButton = document.getElementById('settingsButton');
+  root = createRoot(document.getElementById('app'));
+  settingsButton.addEventListener('click', e => {
     e.preventDefault();
-    root.render(/*#__PURE__*/React.createElement(ChangePasswordForm, null));
+    root.render(/*#__PURE__*/React.createElement(Settings, null));
     return false;
   });
   root.render(/*#__PURE__*/React.createElement(App, null));

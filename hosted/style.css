@@ -45,8 +45,7 @@ body{
     color: #243642;
 }
 
-input, textarea{
-    background-color: #387478;
+input, textarea, .button, button{
     color: #243642;
     border: 1px solid #E2F1E7;
     border-radius: 5px;
@@ -55,7 +54,8 @@ input, textarea{
 }
 
 input{
-    padding: 3px, auto;
+    padding: 3px, 3px;
+    margin-bottom: 5px;
 }
 
 label{
@@ -64,4 +64,18 @@ label{
 
 form *{
     margin-left: 4px;
+}
+
+nav{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.navlink a, .navlink{
+    color: #629584;
+    text-decoration: none;
+    font-size: 24;
+    font-weight: 900;
 }
