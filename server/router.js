@@ -3,6 +3,7 @@ const mid = require('./middleware');
 
 const router = (app) => {
   app.get('/getMessage', mid.requiresLogin, controllers.Message.getMessage);
+  app.get('/getPremiumMessage', mid.requiresLogin, mid.requiresPremium, controllers.Message.getPremiumMessage);
 
   app.get('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);

@@ -6,7 +6,18 @@ const messagePage = async (req, res) => res.render('app');
 
 const getMessage = async (req, res) => {
   try {
-    const docs = await Message.findOne({}).sort({ createdDate: 'descending' }).lean().exec();
+    const docs = await Message.findOne({ isPremium: false }).sort({ createdDate: 'descending' }).lean().exec();
+
+    return res.json({ message: docs });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'Error retrieving message!' });
+  }
+};
+
+const getPremiumMessage = async (req, res) => {
+  try {
+    const docs = await Message.findOne({ isPremium: true }).sort({ createdDate: 'descending' }).lean().exec();
 
     return res.json({ message: docs });
   } catch (err) {
@@ -24,7 +35,7 @@ const setMessage = async (req, res) => {
     const messageData = {
       name: req.body.name.slice(0, 1000),
       message: req.body.message.slice(0, 10000),
-      isPremium: req.session.account.isPremium,
+      isPremium: req.body.isPremium,
     };
 
     const newMessage = new Message(messageData);
@@ -40,4 +51,5 @@ module.exports = {
   messagePage,
   setMessage,
   getMessage,
+  getPremiumMessage,
 };

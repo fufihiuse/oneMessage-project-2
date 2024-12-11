@@ -6,11 +6,10 @@ const { createRoot } = require('react-dom/client');
 let root;
 let previousPage;
 let hasPremiumSubscription = false;
-// let isPremium = false;
 
 const PremiumContext = createContext(false);
 
-const handleMessage = (e, onMessageSent) => {
+const handleMessage = (e, onMessageSent, isPremium) => {
     e.preventDefault();
     helper.hideError();
 
@@ -21,13 +20,14 @@ const handleMessage = (e, onMessageSent) => {
         helper.handleError('All fields are required!');
         return false;
     }
-    helper.sendPost(e.target.action, { name, message }, onMessageSent);
+    helper.sendPost(e.target.action, { name, message, isPremium }, onMessageSent,);
     return false;
 };
 
 const MessageForm = (props) => {
+    const [isPremium] = useContext(PremiumContext);
     return (
-        <form onSubmit={(e) => handleMessage(e, props.triggerReload)}
+        <form onSubmit={(e) => handleMessage(e, props.triggerReload, isPremium)}
             name="messageForm"
             action="/message"
             method="POST"
@@ -52,8 +52,7 @@ const Message = (props) => {
             if (isPremium) {
                 response = await fetch('/getPremiumMessage');
             }
-            else
-            {
+            else {
                 response = await fetch('/getMessage');
             }
             const data = await response.json()
@@ -62,7 +61,7 @@ const Message = (props) => {
         loadCurrentMessage();
     });
 
-    if (currentMessage.length === 0) {
+    if (!currentMessage || currentMessage.length === 0) {
         return (
             <div id='message'>
                 <h1>Error retrieving data from server!</h1>
@@ -99,6 +98,7 @@ const handlePassChange = (e) => {
     return false;
 }
 
+// Toggleable premium button for subscribers
 const PremiumCrown = (props) => {
     const [isPremiumSub, setPremiumSub] = useState(props.isPremiumSub);
     const [isPremium, setIsPremium] = useContext(PremiumContext);
