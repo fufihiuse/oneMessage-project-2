@@ -33541,6 +33541,8 @@ const {
   createRoot
 } = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 let root;
+let previousPage;
+let currentPage;
 const handleMessage = (e, onMessageSent) => {
   e.preventDefault();
   helper.hideError();
@@ -33662,25 +33664,41 @@ const ChangePasswordForm = () => {
   }));
 };
 const showChangePassword = () => {
-  root.render(/*#__PURE__*/React.createElement(ChangePasswordForm, null));
+  previousPage = currentPage;
+  currentPage = /*#__PURE__*/React.createElement("div", {
+    className: "settingsPanel"
+  }, /*#__PURE__*/React.createElement(ChangePasswordForm, null));
+  root.render(currentPage);
 };
-const ChangePasswordButton = () => {
+const goBack = () => {};
+const BackButton = () => {
   return /*#__PURE__*/React.createElement("button", {
-    id: "changePasswordButton",
-    onClick: showChangePassword
-  }, "Change Password");
+    id: "backButton",
+    onClick: goBack
+  }, "Back");
 };
 const Settings = () => {
-  return /*#__PURE__*/React.createElement(ChangePasswordButton, null);
+  return /*#__PURE__*/React.createElement("div", {
+    id: "settings"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: showChangePassword
+  }, "Change Password"));
 };
 const init = () => {
   const settingsButton = document.getElementById('settingsButton');
   root = createRoot(document.getElementById('app'));
   settingsButton.addEventListener('click', e => {
     e.preventDefault();
-    root.render(/*#__PURE__*/React.createElement(Settings, null));
+    previousPage = /*#__PURE__*/React.createElement(App, null);
+    root.render(/*#__PURE__*/React.createElement("div", {
+      className: "settingsPanel"
+    }, /*#__PURE__*/React.createElement(Settings, null), /*#__PURE__*/React.createElement("button", {
+      onClick: goBack,
+      id: "backButton"
+    }, "Back")));
     return false;
   });
+  previousPage = /*#__PURE__*/React.createElement(App, null);
   root.render(/*#__PURE__*/React.createElement(App, null));
 };
 window.onload = init;

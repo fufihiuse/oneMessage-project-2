@@ -15,8 +15,8 @@
     margin-right: auto;
     padding-top: 1vh;
     padding-bottom: 1vh;
-    padding-left: 1wv;
-    padding-right: 1wv;
+    padding-left: 1vw;
+    padding-right: 1vw;
     background-color: #629584;
 }
 
@@ -53,6 +53,30 @@ input, textarea, .button, button{
     font-size: 15pt;
 }
 
+.settingsPanel{
+    margin-top: 50px;
+    border: 1px solid #E2F1E7;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 25vw;
+    min-height: 10vh;
+    font-size: 20pt;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    background-color: #284144;
+}
+
+.settingsPanel * {
+    border-color: #476157;
+}
+
 input{
     padding: 3px, 3px;
     margin-bottom: 5px;
@@ -78,4 +102,9 @@ nav{
     text-decoration: none;
     font-size: 24;
     font-weight: 900;
+}
+
+#backButton{
+    margin-top: 10px;
+    position: relative;
 }

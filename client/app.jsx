@@ -4,6 +4,8 @@ const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
 
 let root;
+let previousPage;
+let currentPage;
 
 const handleMessage = (e, onMessageSent) => {
     e.preventDefault();
@@ -125,17 +127,30 @@ const ChangePasswordForm = () => {
 }
 
 const showChangePassword = () => {
-    root.render(<ChangePasswordForm />);
+    previousPage = currentPage;
+    currentPage = (
+        <div className="settingsPanel">
+            <ChangePasswordForm />
+        </div>
+    );
+
+    root.render(currentPage);
 }
 
-const ChangePasswordButton = () => {
-    return <button id='changePasswordButton' onClick={showChangePassword}>Change Password</button>;
+const goBack = () => {
+
+}
+
+const BackButton = () => {
+    return <button id='backButton' onClick={goBack}>Back</button>;
 }
 
 const Settings = () => {
 
     return (
-        <ChangePasswordButton />
+        <div id="settings">
+            <button onClick={showChangePassword}>Change Password</button>
+        </div>
     );
 }
 
@@ -146,9 +161,16 @@ const init = () => {
 
     settingsButton.addEventListener('click', (e) => {
         e.preventDefault();
-        root.render(<Settings />);
+        previousPage = <App />;
+        root.render(
+            <div className='settingsPanel'>
+                <Settings />
+                <button onClick={goBack} id='backButton'>Back</button>
+            </div>
+        );
         return false;
     })
+    previousPage = <App />;
     root.render(<App />);
 };
 
