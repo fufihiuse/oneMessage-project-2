@@ -33542,6 +33542,8 @@ const {
 } = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 let root;
 let previousPage;
+let isPremium = false;
+let hasPremiumSubscription = false;
 const handleMessage = (e, onMessageSent) => {
   e.preventDefault();
   helper.hideError();

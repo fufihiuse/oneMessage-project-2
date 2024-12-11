@@ -5,6 +5,8 @@ const { createRoot } = require('react-dom/client');
 
 let root;
 let previousPage;
+let isPremium = false;
+let hasPremiumSubscription = false;
 
 const handleMessage = (e, onMessageSent) => {
     e.preventDefault();
