@@ -33621,6 +33621,7 @@ const handlePassChange = e => {
     pass,
     pass2
   });
+  fetch('/logout');
   return false;
 };
 const App = () => {

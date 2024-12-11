@@ -19,7 +19,6 @@ const handleMessage = (e, onMessageSent) => {
         helper.handleError('All fields are required!');
         return false;
     }
-
     helper.sendPost(e.target.action, { name, message }, onMessageSent);
     return false;
 };
@@ -88,6 +87,8 @@ const handlePassChange = (e) => {
         return false;
     }
     helper.sendPost(e.target.action, { pass, pass2 });
+
+    fetch('/logout');
 
     return false;
 }
