@@ -53,6 +53,18 @@ input, textarea, .button, button{
     font-size: 15pt;
 }
 
+#premiumCrown{
+    display:block;
+    position: absolute;
+    max-width: 5vw;
+    right: 5vw;
+    top: 1vw;
+}
+
+#premiumText{
+    color: gold;
+}
+
 .settingsPanel{
     margin-top: 50px;
     border: 1px solid #E2F1E7;
@@ -70,6 +82,7 @@ input, textarea, .button, button{
     padding-bottom: 1vh;
     padding-left: 1vw;
     padding-right: 1vw;
+    gap: 2px;
     background-color: #284144;
 }
 

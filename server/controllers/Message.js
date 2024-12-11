@@ -24,7 +24,7 @@ const setMessage = async (req, res) => {
     const messageData = {
       name: req.body.name.slice(0, 1000),
       message: req.body.message.slice(0, 10000),
-      owner: req.session.account._id,
+      isPremium: req.session.account.isPremium,
     };
 
     const newMessage = new Message(messageData);

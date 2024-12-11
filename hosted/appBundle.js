@@ -33535,15 +33535,19 @@ const helper = __webpack_require__(/*! ./helper.js */ "./client/helper.js");
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const {
   useState,
-  useEffect
+  useEffect,
+  useContext,
+  createContext
 } = React;
 const {
   createRoot
 } = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 let root;
 let previousPage;
-let isPremium = false;
 let hasPremiumSubscription = false;
+// let isPremium = false;
+
+const PremiumContext = createContext(false);
 const handleMessage = (e, onMessageSent) => {
   e.preventDefault();
   helper.hideError();
@@ -33585,20 +33589,28 @@ const MessageForm = props => {
 };
 const Message = props => {
   const [currentMessage, setCurrentMessage] = useState(props.currentMessage);
+  const [isPremium, setIsPremium] = useContext(PremiumContext);
   useEffect(() => {
     const loadCurrentMessage = async () => {
-      const response = await fetch('/getMessage');
+      let response;
+      if (isPremium) {
+        response = await fetch('/getPremiumMessage');
+      } else {
+        response = await fetch('/getMessage');
+      }
       const data = await response.json();
       setCurrentMessage(data.message);
     };
     loadCurrentMessage();
   });
-  if (!currentMessage || currentMessage.length === 0) {
+  if (currentMessage.length === 0) {
     return /*#__PURE__*/React.createElement("div", {
       id: "message"
     }, /*#__PURE__*/React.createElement("h1", null, "Error retrieving data from server!"));
   }
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "The current oneMessage is from ", /*#__PURE__*/React.createElement("span", {
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "The current ", isPremium && /*#__PURE__*/React.createElement("span", {
+    id: "premiumText"
+  }, "premium "), "oneMessage is from ", /*#__PURE__*/React.createElement("span", {
     id: "name"
   }, currentMessage.name), ":"), /*#__PURE__*/React.createElement("div", {
     id: "message"
@@ -33624,9 +33636,42 @@ const handlePassChange = e => {
   fetch('/logout');
   return false;
 };
+const PremiumCrown = props => {
+  const [isPremiumSub, setPremiumSub] = useState(props.isPremiumSub);
+  const [isPremium, setIsPremium] = useContext(PremiumContext);
+  useEffect(() => {
+    const checkSubscription = async () => {
+      const response = await fetch('/getPremiumStatus');
+      const data = await response.json();
+      setPremiumSub(data);
+    };
+    checkSubscription();
+  });
+  if (!isPremiumSub) {
+    return;
+  }
+  let imgName = isPremium ? 'crown-premium.png' : 'crown-normal.png';
+  let imgPath = '/assets/img/' + imgName;
+  return /*#__PURE__*/React.createElement("img", {
+    src: imgPath,
+    alt: "premium toggle crown",
+    id: "premiumCrown",
+    onClick: () => {
+      setIsPremium(!isPremium);
+    }
+  });
+};
 const App = () => {
-  const [reloadMessage, setreloadMessage] = useState(false);
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  const [reloadMessage, setReloadMessage] = useState(false);
+  const [isPremiumSub, setPremiumSub] = useState(hasPremiumSubscription);
+  const [isPremium, setIsPremium] = useState(false); // Tracks is user is using premium features
+
+  return /*#__PURE__*/React.createElement(PremiumContext.Provider, {
+    value: [isPremium, setIsPremium]
+  }, /*#__PURE__*/React.createElement(PremiumCrown, {
+    isPremiumSub: isPremiumSub,
+    isPremium: isPremium
+  }), /*#__PURE__*/React.createElement("div", {
     id: "currentMessage"
   }, /*#__PURE__*/React.createElement(Message, {
     currentMessage: [],
@@ -33634,7 +33679,7 @@ const App = () => {
   })), /*#__PURE__*/React.createElement("div", {
     id: "submitMessage"
   }, "Submit your oneMessage:", /*#__PURE__*/React.createElement(MessageForm, {
-    triggerReload: () => setreloadMessage(!reloadMessage)
+    triggerReload: () => setReloadMessage(!reloadMessage)
   })));
 };
 const ChangePasswordForm = () => {
@@ -33680,13 +33725,28 @@ const BackButton = () => {
     onClick: goBack
   }, "Back");
 };
+const buyPremium = () => {
+  helper.hideError();
+  helper.sendPost('/buyPremium', {});
+  fetch('/');
+  return false;
+};
+const BuyPremiumButton = () => {
+  if (!hasPremiumSubscription) {
+    return /*#__PURE__*/React.createElement("button", {
+      onClick: buyPremium
+    }, "Purchase Premium");
+  } else {
+    return;
+  }
+};
 const Settings = () => {
   previousPage = /*#__PURE__*/React.createElement(App, null);
   return /*#__PURE__*/React.createElement("div", {
     className: "settingsPanel"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: showChangePassword
-  }, "Change Password"), /*#__PURE__*/React.createElement(BackButton, null));
+  }, "Change Password"), /*#__PURE__*/React.createElement(BuyPremiumButton, null), /*#__PURE__*/React.createElement(BackButton, null));
 };
 const init = () => {
   const settingsButton = document.getElementById('settingsButton');

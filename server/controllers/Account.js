@@ -44,7 +44,7 @@ const signup = async (req, res) => {
 
   try {
     const hash = await Account.generateHash(pass);
-    const newAccount = new Account({ username, password: hash });
+    const newAccount = new Account({ username, password: hash, hasPremium: false });
     await newAccount.save();
     req.session.account = Account.toAPI(newAccount);
     return res.json({ redirect: '/message' });
@@ -81,10 +81,31 @@ const changePassword = async (req, res) => {
   }
 };
 
+const buyPremium = async (req, res) => {
+
+  try {
+
+    await AccountModel.updateOne({ _id: req.session.account._id }, { hasPremium: true });
+
+    return res.json({ redirect: '/message' });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'An error occured!' });
+  }
+};
+
+const getPremiumStatus = async (req, res) => {
+  if(req.session.account) {
+    return res.json(req.session.account.hasPremium);
+  }
+};
+
 module.exports = {
   loginPage,
   logout,
   login,
   signup,
   changePassword,
+  buyPremium,
+  getPremiumStatus,
 };

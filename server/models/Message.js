@@ -17,10 +17,10 @@ const MessageSchema = new mongoose.Schema({
     trim: true,
     maxLength: 10000,
   },
-  owner: {
-    type: mongoose.Schema.ObjectId,
-    required: false,
-    ref: 'Account',
+  isPremium: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
   createdDate: {
     type: Date,

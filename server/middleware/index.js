@@ -5,6 +5,13 @@ const requiresLogin = (req, res, next) => {
   return next();
 };
 
+const requiresPremium = (req, res, next) => {
+  if (!req.session.account.hasPremium) {
+    return res.redirect('/');
+  }
+  return next();
+};
+
 const requiresLogout = (req, res, next) => {
   if (req.session.account) {
     return res.redirect('/message');

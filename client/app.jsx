@@ -1,12 +1,14 @@
 const helper = require('./helper.js');
 const React = require('react');
-const { useState, useEffect } = React;
+const { useState, useEffect, useContext, createContext } = React;
 const { createRoot } = require('react-dom/client');
 
 let root;
 let previousPage;
-let isPremium = false;
 let hasPremiumSubscription = false;
+// let isPremium = false;
+
+const PremiumContext = createContext(false);
 
 const handleMessage = (e, onMessageSent) => {
     e.preventDefault();
@@ -42,18 +44,25 @@ const MessageForm = (props) => {
 
 const Message = (props) => {
     const [currentMessage, setCurrentMessage] = useState(props.currentMessage);
+    const [isPremium, setIsPremium] = useContext(PremiumContext);
 
     useEffect(() => {
         const loadCurrentMessage = async () => {
-            const response = await fetch('/getMessage');
+            let response;
+            if (isPremium) {
+                response = await fetch('/getPremiumMessage');
+            }
+            else
+            {
+                response = await fetch('/getMessage');
+            }
             const data = await response.json()
             setCurrentMessage(data.message);
         };
         loadCurrentMessage();
-
     });
 
-    if (!currentMessage || currentMessage.length === 0) {
+    if (currentMessage.length === 0) {
         return (
             <div id='message'>
                 <h1>Error retrieving data from server!</h1>
@@ -63,7 +72,7 @@ const Message = (props) => {
 
     return (
         <div>
-            <h1>The current oneMessage is from <span id="name">{currentMessage.name}</span>:</h1>
+            <h1>The current {isPremium && <span id="premiumText">premium </span>}oneMessage is from <span id="name">{currentMessage.name}</span>:</h1>
             <div id="message">{currentMessage.message}</div>
         </div>
     )
@@ -73,7 +82,6 @@ const Message = (props) => {
 const handlePassChange = (e) => {
     e.preventDefault();
     helper.hideError();
-
     const pass = e.target.querySelector('#pass').value;
     const pass2 = e.target.querySelector('#pass2').value;
 
@@ -87,25 +95,51 @@ const handlePassChange = (e) => {
         return false;
     }
     helper.sendPost(e.target.action, { pass, pass2 });
-
     fetch('/logout');
-
     return false;
 }
 
+const PremiumCrown = (props) => {
+    const [isPremiumSub, setPremiumSub] = useState(props.isPremiumSub);
+    const [isPremium, setIsPremium] = useContext(PremiumContext);
+
+    useEffect(() => {
+        const checkSubscription = async () => {
+            const response = await fetch('/getPremiumStatus');
+            const data = await response.json()
+            setPremiumSub(data);
+        };
+        checkSubscription();
+
+    });
+
+    if (!isPremiumSub) {
+        return;
+    }
+
+    let imgName = isPremium ? 'crown-premium.png' : 'crown-normal.png';
+    let imgPath = '/assets/img/' + imgName;
+    return (
+        <img src={imgPath} alt='premium toggle crown' id='premiumCrown' onClick={() => { setIsPremium(!isPremium) }}></img>
+    )
+}
+
 const App = () => {
-    const [reloadMessage, setreloadMessage] = useState(false);
+    const [reloadMessage, setReloadMessage] = useState(false);
+    const [isPremiumSub, setPremiumSub] = useState(hasPremiumSubscription);
+    const [isPremium, setIsPremium] = useState(false); // Tracks is user is using premium features
 
     return (
-        <div>
+        <PremiumContext.Provider value={[isPremium, setIsPremium]}>
+            <PremiumCrown isPremiumSub={isPremiumSub} isPremium={isPremium} />
             <div id="currentMessage">
                 <Message currentMessage={[]} reloadMessage={reloadMessage} />
             </div>
             <div id="submitMessage">
                 Submit your oneMessage:
-                <MessageForm triggerReload={() => setreloadMessage(!reloadMessage)} />
+                <MessageForm triggerReload={() => setReloadMessage(!reloadMessage)} />
             </div>
-        </div>
+        </PremiumContext.Provider>
     );
 };
 
@@ -146,11 +180,29 @@ const BackButton = () => {
     return <button id='backButton' onClick={goBack}>Back</button>;
 }
 
+const buyPremium = () => {
+    helper.hideError();
+    helper.sendPost('/buyPremium', {});
+
+    fetch('/');
+    return false;
+}
+
+const BuyPremiumButton = () => {
+    if (!hasPremiumSubscription) {
+        return <button onClick={buyPremium}>Purchase Premium</button>
+    }
+    else {
+        return;
+    }
+}
+
 const Settings = () => {
     previousPage = <App />;
     return (
         <div className="settingsPanel">
             <button onClick={showChangePassword}>Change Password</button>
+            <BuyPremiumButton />
             <BackButton />
         </div>
     );
