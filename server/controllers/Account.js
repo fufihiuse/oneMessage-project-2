@@ -82,9 +82,7 @@ const changePassword = async (req, res) => {
 };
 
 const buyPremium = async (req, res) => {
-
   try {
-
     await AccountModel.updateOne({ _id: req.session.account._id }, { hasPremium: true });
 
     return res.json({ redirect: '/message' });
@@ -95,8 +93,14 @@ const buyPremium = async (req, res) => {
 };
 
 const getPremiumStatus = async (req, res) => {
-  if(req.session.account) {
-    return res.json(req.session.account.hasPremium);
+  try {
+    if (req.session.account) {
+      return res.json(req.session.account.hasPremium);
+    }
+    return res.status(500).json({ error: 'No account found' });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'An error occured!' });
   }
 };
 
