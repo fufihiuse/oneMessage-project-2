@@ -5,7 +5,6 @@ const { createRoot } = require('react-dom/client');
 
 let root;
 let previousPage;
-let currentPage;
 
 const handleMessage = (e, onMessageSent) => {
     e.preventDefault();
@@ -127,18 +126,17 @@ const ChangePasswordForm = () => {
 }
 
 const showChangePassword = () => {
-    previousPage = currentPage;
-    currentPage = (
+    previousPage = <Settings />
+    root.render(
         <div className="settingsPanel">
             <ChangePasswordForm />
+            <BackButton />
         </div>
     );
-
-    root.render(currentPage);
 }
 
 const goBack = () => {
-
+    root.render(previousPage);
 }
 
 const BackButton = () => {
@@ -146,10 +144,11 @@ const BackButton = () => {
 }
 
 const Settings = () => {
-
+    previousPage = <App />;
     return (
-        <div id="settings">
+        <div className="settingsPanel">
             <button onClick={showChangePassword}>Change Password</button>
+            <BackButton />
         </div>
     );
 }
@@ -162,12 +161,7 @@ const init = () => {
     settingsButton.addEventListener('click', (e) => {
         e.preventDefault();
         previousPage = <App />;
-        root.render(
-            <div className='settingsPanel'>
-                <Settings />
-                <button onClick={goBack} id='backButton'>Back</button>
-            </div>
-        );
+        root.render(<Settings />);
         return false;
     })
     previousPage = <App />;

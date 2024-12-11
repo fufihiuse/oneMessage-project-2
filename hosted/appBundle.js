@@ -33542,7 +33542,6 @@ const {
 } = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 let root;
 let previousPage;
-let currentPage;
 const handleMessage = (e, onMessageSent) => {
   e.preventDefault();
   helper.hideError();
@@ -33664,13 +33663,14 @@ const ChangePasswordForm = () => {
   }));
 };
 const showChangePassword = () => {
-  previousPage = currentPage;
-  currentPage = /*#__PURE__*/React.createElement("div", {
+  previousPage = /*#__PURE__*/React.createElement(Settings, null);
+  root.render(/*#__PURE__*/React.createElement("div", {
     className: "settingsPanel"
-  }, /*#__PURE__*/React.createElement(ChangePasswordForm, null));
-  root.render(currentPage);
+  }, /*#__PURE__*/React.createElement(ChangePasswordForm, null), /*#__PURE__*/React.createElement(BackButton, null)));
 };
-const goBack = () => {};
+const goBack = () => {
+  root.render(previousPage);
+};
 const BackButton = () => {
   return /*#__PURE__*/React.createElement("button", {
     id: "backButton",
@@ -33678,11 +33678,12 @@ const BackButton = () => {
   }, "Back");
 };
 const Settings = () => {
+  previousPage = /*#__PURE__*/React.createElement(App, null);
   return /*#__PURE__*/React.createElement("div", {
-    id: "settings"
+    className: "settingsPanel"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: showChangePassword
-  }, "Change Password"));
+  }, "Change Password"), /*#__PURE__*/React.createElement(BackButton, null));
 };
 const init = () => {
   const settingsButton = document.getElementById('settingsButton');
@@ -33690,12 +33691,7 @@ const init = () => {
   settingsButton.addEventListener('click', e => {
     e.preventDefault();
     previousPage = /*#__PURE__*/React.createElement(App, null);
-    root.render(/*#__PURE__*/React.createElement("div", {
-      className: "settingsPanel"
-    }, /*#__PURE__*/React.createElement(Settings, null), /*#__PURE__*/React.createElement("button", {
-      onClick: goBack,
-      id: "backButton"
-    }, "Back")));
+    root.render(/*#__PURE__*/React.createElement(Settings, null));
     return false;
   });
   previousPage = /*#__PURE__*/React.createElement(App, null);
