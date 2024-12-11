@@ -73,6 +73,11 @@ input, textarea, .button, button{
     background-color: #284144;
 }
 
+#errorMessage{
+    color: red;
+    font-size: 18;
+}
+
 .settingsPanel * {
     border-color: #476157;
 }
